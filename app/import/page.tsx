@@ -7,9 +7,11 @@ export default function Import() {
             <div>
                 Import your data here
             </div>
-            <Button size="medium" variant="primary">
-                <Link href="/dashboard">Dashboard</Link>
-            </Button>
+            <Link href="/dashboard">
+                <Button size="medium" variant="primary">
+                    Dashboard
+                </Button>
+            </Link>
         </>
     )
 }

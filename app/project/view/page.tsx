@@ -18,7 +18,7 @@ export default function ViewDashBoard() {
         <MenuItem onClick={() => setSelectedItem('Settings')}>Settings</MenuItem>
       </Menu>
       <Workspace selectedItem={selectedItem}>
-        <h1>{selectedItem.toLowerCase()}</h1>
+        <span></span>
       </Workspace>
     </main>
   );

@@ -76,7 +76,7 @@ export default function Sheet ({
                     <Cell
             key={cellId}
             isSelected={selectedCell === cellId}
-            onClick={() => handleCellClick(cellId, cellValue)}
+            onClick={() => handleCellClick(cellId)}
           >
             {selectedCell === cellId ? (
               <input

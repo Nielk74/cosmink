@@ -1,5 +1,5 @@
 'use client';
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
 type CellContextType = {
   cellsMap: Map<string, Map<string, string>>;

@@ -13,18 +13,16 @@ export default function Sheet ({
 }>) {
   const { cellsMap, setCellsMap } = useCellContext();
   const [selectedCell, setSelectedCell] = React.useState<string | null>(null);
-  const [cellValue, setCellValue] = React.useState<string>('');
 
 
 
-  const handleCellClick = (cellKey: string, value: string) => {
+  const handleCellClick = (cellKey: string) => {
     setSelectedCell(cellKey);
-    setCellValue(cellValue);
   };
 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCellValue(e.target.value);
+    // setCellValue(e.target.value);
     if (selectedCell) {
       const [rowKey, colKey] = selectedCell.split('-');
       const row = cellsMap.get(rowKey);

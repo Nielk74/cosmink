@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import Sheet from '../feature/sheet/Sheet';
+import Dashboard from '../feature/dashboard/Dashboard';
 
 
 export default function Workspace ({
@@ -22,6 +23,7 @@ export default function Workspace ({
     >
         <h1>{selectedItem}</h1>
       {selectedItem === 'Sheet' && <Sheet>{children}</Sheet>}
+      {selectedItem === 'Dashboard' && <Dashboard>{children}</Dashboard>}
     </main>
   );
 }

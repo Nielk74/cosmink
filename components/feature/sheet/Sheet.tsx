@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import Cell from './Cell';
+import { useCellContext } from './CellContext';
 
 
 export default function Sheet ({
@@ -10,21 +11,11 @@ export default function Sheet ({
   children: React.ReactNode;
   className?: string;
 }>) {
-  const [cellsMap, setCellsMap] = React.useState(new Map<string, Map<string, string>>());
+  const { cellsMap, setCellsMap } = useCellContext();
   const [selectedCell, setSelectedCell] = React.useState<string | null>(null);
   const [cellValue, setCellValue] = React.useState<string>('');
 
-  React.useEffect(() => {
-    const cellsMap = new Map<string, Map<string, string>>();
-    for (let i = 0; i < 10; i++) {
-      const row = new Map<string, string>();
-      for (let j = 0; j < 10; j++) {
-        row.set(`${j}`, `${i}-${j}`);	
-      }
-      cellsMap.set(`${i}`, row);
-    }
-    setCellsMap(cellsMap);
-  }, []);
+
 
   const handleCellClick = (cellKey: string, value: string) => {
     setSelectedCell(cellKey);

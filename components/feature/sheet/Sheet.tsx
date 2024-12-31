@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import Cell from './cell';
+import Cell from './Cell';
 
 
 export default function Sheet ({
@@ -43,6 +43,7 @@ export default function Sheet ({
       }
     }
   };
+
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();

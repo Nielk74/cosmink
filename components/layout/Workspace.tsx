@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import Sheet from '../feature/Sheet/Sheet';
+import Sheet from '../feature/sheet/sheet';
 
 
 export default function Workspace ({

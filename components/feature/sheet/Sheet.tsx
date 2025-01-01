@@ -22,7 +22,6 @@ export default function Sheet ({
 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setCellValue(e.target.value);
     if (selectedCell) {
       const [rowKey, colKey] = selectedCell.split('-');
       const row = cellsMap.get(rowKey);

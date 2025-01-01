@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: var(--mui-common-background);
+  --foreground: var(--mui-secondary-main);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +15,5 @@
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background-color: var(--mui-background-default);
 }

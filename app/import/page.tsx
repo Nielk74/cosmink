@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Button from '@/components/ui/Button';
+import Button from '@mui/material/Button';
 
 export default function Import() {
     return(
@@ -7,9 +7,9 @@ export default function Import() {
             <div className='font-[family-name:var(--font-geist-sans)]'>
                 Import your data here
             </div>
-            <Link href="/dashboard">
-                <Button size="medium" variant="primary" className='font-[family-name:var(--font-geist-mono)]'>
-                    Dashboard
+            <Link href="/project/view">
+                <Button variant="contained" size="large">
+                    Go to Dashboard
                 </Button>
             </Link>
         </>

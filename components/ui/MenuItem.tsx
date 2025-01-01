@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import Button from './Button';
+import Button from '@mui/material/Button';
 
 
 export default function MenuItem ({

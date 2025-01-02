@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: var(--mui-common-background);
+/* :root {
+  --background: var(--mui-background-default);
   --foreground: var(--mui-secondary-main);
 }
 
@@ -12,8 +12,8 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
-body {
+/* body {
   background-color: var(--mui-background-default);
-}
+} */

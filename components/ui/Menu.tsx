@@ -1,21 +1,31 @@
 import React from 'react';
 import clsx from 'clsx';
+import { ToggleButton, ToggleButtonGroup }  from '@mui/material';
 
 export default function Menu ({
-  children,
   className,
+  setSelectedItem,
+  value
 }: Readonly<{
-  children: React.ReactNode;
   className?: string;
+  setSelectedItem: (value: string) => void;
+  value: string;
 }>) {
   return (
-    <nav
+    <ToggleButtonGroup
+    color="primary"
+      exclusive
+      orientation="vertical"
+      value={value}
       className={clsx(
-        'flex flex-col gap-4 bg-gray-100 dark:bg-gray-800 p-4 rounded-lg',
+        'p-8 rounded-lg',
         className,
       )}
     >
-      {children}
-    </nav>
+      <ToggleButton value="Sheet" onClick={()=>setSelectedItem("Sheet")} >Sheet</ToggleButton>
+      <ToggleButton value="Dashboard" onClick={()=>setSelectedItem("Dashboard")}> Dashboard</ToggleButton>
+      <ToggleButton value="Team" onClick={()=>setSelectedItem("Team")}> Team</ToggleButton>
+      <ToggleButton value="Settings" onClick={()=>setSelectedItem("Settings")}> Settings</ToggleButton>
+    </ToggleButtonGroup>
   );
 }

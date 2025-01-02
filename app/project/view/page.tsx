@@ -10,13 +10,8 @@ export default function ViewDashBoard() {
   const [selectedItem, setSelectedItem] = useState('Dashboard');
 
   return (
-    <main className="flex gap-4 p-4">
-      <Menu>
-        <MenuItem onClick={() => setSelectedItem('Sheet')}>Sheet</MenuItem>
-        <MenuItem onClick={() => setSelectedItem('Dashboard')}>Dashboard</MenuItem>
-        <MenuItem onClick={() => setSelectedItem('Team')}>Team</MenuItem>
-        <MenuItem onClick={() => setSelectedItem('Settings')}>Settings</MenuItem>
-      </Menu>
+    <main className="flex gap-4 p-4 h-screen">
+      <Menu setSelectedItem={setSelectedItem} value={selectedItem}/>
       <Workspace selectedItem={selectedItem}>
         <span></span>
       </Workspace>

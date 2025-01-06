@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cosmink Frontend
 
-## Getting Started
+Welcome to the frontend service for **Cosmink**, a graphical insights analyzer. This project provides the user interface and client-side functionality to support the visualization and analysis features of Cosmink.
 
-First, run the development server:
+## Project Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The frontend is organized into a modular and scalable structure:
+
+```
+.
+├── app
+│   ├── api   
+│   ├── import   
+│   └── project    
+├── components
+│   ├── feature  
+│   ├── layout  
+│   └── ui    
+├── public 
+├── styles
+└── lib 
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Ensure you have the following installed:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [Node.js](https://nodejs.org/) (version 16 or higher)
+- [pnpm](https://pnpm.io/) (preferred package manager)
+- [Docker](https://www.docker.com/) (optional, for containerized deployment)
 
-## Learn More
+## Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git clone <repository-url>
+   cd cosmink-frontend
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Install dependencies:
 
-## Deploy on Vercel
+   ```bash
+   pnpm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Run the development server:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   pnpm dev
+   ```
+
+4. Open your browser at `http://localhost:3000` to view the application.
+
+## Docker
+
+To build and run the application using Docker:
+
+1. Build the Docker image:
+
+   ```bash
+   docker build -t cosmink-frontend:latest .
+   ```
+
+2. Run the Docker container:
+
+   ```bash
+   docker run -p 3000:3000 cosmink-frontend:latest
+   ```
+
+3. Open your browser at `http://localhost:3000`.
+
+## Testing
+
+Run linting and tests to ensure code quality:
+
+1. Lint the code:
+
+   ```bash
+   pnpm lint
+   ```
+
+2. Run tests:
+
+   ```bash
+   pnpm test
+   ```
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -m 'Add feature'`).
+4. Push to the branch (`git push origin feature-name`).
+5. Open a pull request.
+

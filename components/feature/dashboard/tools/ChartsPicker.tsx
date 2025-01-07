@@ -9,16 +9,21 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
 import { ListSubheader } from '@mui/material';
-
+import { CacheEntry } from 'next/dist/server/lib/cache-handlers/types';
+import { Position } from '../Dashboard';
 
 export default function ChartPicker({
   children,
   className,
   addChart,
+  displayHighlight,
+  setHighlightVisible,
 }: Readonly<{
   children?: React.ReactNode;
   className?: string;
-    addChart: (topLeftX : number, topLeftY : number, bottomRightX : number , bottomRightY : number, element: React.ReactNode) => void;
+    displayHighlight: (centerX: number, centerY: number) => void;
+    setHighlightVisible: (visible: boolean) => void;
+    addChart: (cursorPosition: Position, element: React.ReactNode) => void;
 }>) {
     const [dragClone, setDragClone] = React.useState<HTMLElement | null>(null);
     
@@ -46,6 +51,7 @@ export default function ChartPicker({
 
     // set drag image as white
     e.dataTransfer.setDragImage(new Image(), 0, 0);
+    setHighlightVisible(true);
     setDragClone(clone);
 
     e.dataTransfer.setData('text/plain', chartName); // Optional: Set drag data
@@ -53,11 +59,11 @@ export default function ChartPicker({
   };
 
   const handleDrag = (e: React.DragEvent<HTMLLIElement>) => {
-
     if (dragClone) {
       // Move the clone with the cursor
       dragClone.style.left = `${e.clientX}px`;
       dragClone.style.top = `${e.clientY}px`;
+      displayHighlight(e.clientX, e.clientY);
     }
   };
 
@@ -82,8 +88,9 @@ export default function ChartPicker({
         }
         const left = e.clientX;
         const top = e.clientY;
-        addChart(left, top, left + 200, top + 200, element);
+        addChart(new Position(top, left), element);
       dragClone.remove(); // Remove the clone
+      setHighlightVisible(false);
       setDragClone(null);
     }
   };

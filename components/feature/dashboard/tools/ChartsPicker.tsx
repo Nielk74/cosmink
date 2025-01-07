@@ -66,7 +66,6 @@ export default function ChartPicker({
         // create a React element from the clone value
         const chartType = dragClone.textContent;
         let element = <></>;
-        console.log(chartType);
         switch (chartType) {
             case 'Pie Chart':
                 element = <PieChartIcon />;
@@ -81,7 +80,6 @@ export default function ChartPicker({
                 element = <ScatterPlotIcon />;
                 break;
         }
-        console.log(e.clientX, e.clientY);
         const left = e.clientX;
         const top = e.clientY;
         addChart(left, top, left + 200, top + 200, element);

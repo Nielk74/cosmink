@@ -10,12 +10,15 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
 import { ListSubheader } from '@mui/material';
 
+
 export default function ChartPicker({
   children,
   className,
+  addChart,
 }: Readonly<{
   children?: React.ReactNode;
   className?: string;
+    addChart: (topLeftX : number, topLeftY : number, bottomRightX : number , bottomRightY : number, element: React.ReactNode) => void;
 }>) {
     const [dragClone, setDragClone] = React.useState<HTMLElement | null>(null);
     
@@ -58,8 +61,30 @@ export default function ChartPicker({
     }
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (e: React.DragEvent<HTMLLIElement>) => {
     if (dragClone) {
+        // create a React element from the clone value
+        const chartType = dragClone.textContent;
+        let element = <></>;
+        console.log(chartType);
+        switch (chartType) {
+            case 'Pie Chart':
+                element = <PieChartIcon />;
+                break;
+            case 'Bar Chart':
+                element = <BarChartIcon />;
+                break;
+            case 'Line Chart':
+                element = <ShowChartIcon />;
+                break;
+            case 'Scatter Plot':
+                element = <ScatterPlotIcon />;
+                break;
+        }
+        console.log(e.clientX, e.clientY);
+        const left = e.clientX;
+        const top = e.clientY;
+        addChart(left, top, left + 200, top + 200, element);
       dragClone.remove(); // Remove the clone
       setDragClone(null);
     }

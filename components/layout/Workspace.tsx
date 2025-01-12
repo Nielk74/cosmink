@@ -23,7 +23,7 @@ export default function Workspace ({
     >
         <h1>{selectedItem}</h1>
       {selectedItem === 'Sheet' && <Sheet>{children}</Sheet>}
-      {selectedItem === 'Dashboard' && <Dashboard>{children}</Dashboard>}
+      {selectedItem === 'Dashboard' && <Dashboard/>}
     </main>
   );
 }

@@ -27,7 +27,7 @@ export const CellProvider: React.FC<{ children: React.ReactNode }> = ({ children
     cellsMap.set("0", headerRow);
   
     // Data rows
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 0; i <= 10; i++) {
       const row = new Map<string, string>();
       const city = cities[i % cities.length];
       const region = regions[i % regions.length];
@@ -35,7 +35,7 @@ export const CellProvider: React.FC<{ children: React.ReactNode }> = ({ children
       row.set("0", city);
       row.set("1", region);
       row.set("2", population.toString());
-      cellsMap.set(`${i}`, row);
+      cellsMap.set(`${i+1}`, row);
     }
   
     setCellsMap(cellsMap);

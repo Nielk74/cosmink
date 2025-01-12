@@ -72,7 +72,7 @@ export default function ChartPicker({
     if (dragClone) {
         // create a React element from the clone value
         const chartType = dragClone.textContent;
-        let element = <ChartWrapper chartType={chartType} />;
+        const element = <ChartWrapper chartType={chartType} />;
         
         const left = e.clientX;
         const top = e.clientY;

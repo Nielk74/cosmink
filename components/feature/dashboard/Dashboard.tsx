@@ -1,6 +1,5 @@
-import React, { ReactHTMLElement } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import { useCellContext } from '../sheet/CellContext';
 import ChartPicker from './tools/ChartsPicker';
 import Highlight from './Highlight';
 
@@ -43,13 +42,10 @@ export class Chart {
 }
 
 export default function Dashboard({
-  children,
   className,
 }: Readonly<{
-  children: React.ReactNode;
   className?: string;
 }>) {
-  const { cellsMap } = useCellContext();
   const [ chartsMap, setChartsMap ] = React.useState(new Map<string, Chart>());
   const [ highlightPositionTopLeft, setHighlightPositionTopLeft ] = React.useState(new Position(0,0));
   const [ highlightPositionBottomRight, setHighlightPositionBottomRight ] = React.useState(new Position(0,0));
@@ -81,7 +77,7 @@ export default function Dashboard({
     const chartHeight = 200;
     const gridStep = 100;
 
-    let [left, top] = computeInitialPosition(cursorPosition, chartWidth, chartHeight, gridStep);
+    const [left, top] = computeInitialPosition(cursorPosition, chartWidth, chartHeight, gridStep);
     let [topLeft, bottomRight] = createPositions(top, left, chartWidth, chartHeight);
 
     const dashboardElement = document.querySelector("#dashboard") as HTMLElement;
@@ -106,8 +102,8 @@ export default function Dashboard({
   }
 
   function createPositions(top: number, left: number, chartWidth: number, chartHeight: number): [Position, Position] {
-    let topLeft = new Position(top, left);
-    let bottomRight = new Position(top + chartHeight, left + chartWidth);
+    const topLeft = new Position(top, left);
+    const bottomRight = new Position(top + chartHeight, left + chartWidth);
     return [topLeft, bottomRight];
   }
 
@@ -116,7 +112,7 @@ export default function Dashboard({
   }
 
   function adjustPositionForOverlaps(topLeft: Position, bottomRight: Position, chartWidth: number, chartHeight: number, gridStep: number, dashboardElement: HTMLElement): [Position, Position] {
-    for (let chart of chartsMap.values()) {
+    for (const chart of chartsMap.values()) {
       let isOverlapping = true;
 
       while (isOverlapping) {

@@ -2,10 +2,11 @@ import React from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import clsx from 'clsx';
 import { useCellContext } from '../../sheet/CellContext';
+import { Data } from './ChartWrapper';
 
 type ColumnPickerProps = {
   className?: string;
-  setData: (value: any) => void;
+  setData: (value: Data) => void;
   title: string;
   color?: 'primary' | 'secondary';
 };

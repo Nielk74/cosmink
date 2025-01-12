@@ -62,6 +62,7 @@ export default function ChartPicker({
       // Move the clone with the cursor
       dragClone.style.left = `${e.clientX}px`;
       dragClone.style.top = `${e.clientY}px`;
+      setHighlightVisible(true);
       displayHighlight(new Position(e.clientY, e.clientX));
     }
   };

@@ -9,7 +9,6 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
 import { ListSubheader } from '@mui/material';
-import { CacheEntry } from 'next/dist/server/lib/cache-handlers/types';
 import { Position } from '../Dashboard';
 
 export default function ChartPicker({
@@ -21,7 +20,7 @@ export default function ChartPicker({
 }: Readonly<{
   children?: React.ReactNode;
   className?: string;
-    displayHighlight: (centerX: number, centerY: number) => void;
+    displayHighlight: (cursorPosition: Position) => void;
     setHighlightVisible: (visible: boolean) => void;
     addChart: (cursorPosition: Position, element: React.ReactNode) => void;
 }>) {
@@ -63,7 +62,7 @@ export default function ChartPicker({
       // Move the clone with the cursor
       dragClone.style.left = `${e.clientX}px`;
       dragClone.style.top = `${e.clientY}px`;
-      displayHighlight(e.clientX, e.clientY);
+      displayHighlight(new Position(e.clientY, e.clientX));
     }
   };
 

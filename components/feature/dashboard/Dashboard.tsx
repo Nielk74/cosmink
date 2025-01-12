@@ -36,30 +36,31 @@ export default function Dashboard({
   const [ highlightPositionTopLeft, setHighlightPositionTopLeft ] = React.useState(new Position(0,0));
   const [ highlightPositionBottomRight, setHighlightPositionBottomRight ] = React.useState(new Position(0,0));
   const [ highlightVisible, setHighlightVisible ] = React.useState(false);
+
   function addChart(cursorPosition : Position , element: React.ReactNode) {
     // compute the position of the chart in the grid
-    const [ positionTopLeft , positionBottomRight ] = computeChartPosition(cursorPosition.x, cursorPosition.y);
+    const [ positionTopLeft , positionBottomRight ] = computeChartPosition(cursorPosition);
     const newChart = new Chart(positionTopLeft, positionBottomRight, element);
     setChartsMap(new Map(chartsMap.set('chart'+Math.random() , newChart)));
   }
 
-  function displayHighlight(centerX : number, centerY : number) {
-    const [positionTopLeft, positionBottomRight ] = computeChartPosition(centerX, centerY);
+  function displayHighlight(atPosition : Position) {
+    const [positionTopLeft, positionBottomRight ] = computeChartPosition(atPosition);
     setHighlightPositionTopLeft(positionTopLeft);
     setHighlightPositionBottomRight(positionBottomRight);
     console.log(positionTopLeft, positionBottomRight);
     console.log(highlightVisible);
   }
 
-  function computeChartPosition(centerX: number, centerY: number): [Position, Position] {
+  function computeChartPosition(cursorPosition : Position): [Position, Position] {
     // Example chart dimensions (you can replace these with dynamic or more accurate values)
     const chartWidth = 300;
     const chartHeight = 200;
     // Grid step (how coarse or fine you want the snap)
     const gridStep = 100;
     // Compute chart’s “natural” top-left position (centered around [centerX, centerY])
-    let left = centerX - chartWidth / 2;
-    let top = centerY - chartHeight / 2;
+    let left = cursorPosition.x - chartWidth / 2;
+    let top = cursorPosition.y - chartHeight / 2;
     // Snap to grid
     left = Math.round(left / gridStep) * gridStep;
     top = Math.round(top / gridStep) * gridStep;

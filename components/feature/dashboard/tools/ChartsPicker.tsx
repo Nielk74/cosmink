@@ -10,6 +10,7 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
 import { ListSubheader } from '@mui/material';
 import { Position } from '../Dashboard';
+import ChartWrapper from './ChartWrapper';
 
 export default function ChartPicker({
   children,
@@ -71,21 +72,8 @@ export default function ChartPicker({
     if (dragClone) {
         // create a React element from the clone value
         const chartType = dragClone.textContent;
-        let element = <></>;
-        switch (chartType) {
-            case 'Pie Chart':
-                element = <PieChartIcon />;
-                break;
-            case 'Bar Chart':
-                element = <BarChartIcon />;
-                break;
-            case 'Line Chart':
-                element = <ShowChartIcon />;
-                break;
-            case 'Scatter Plot':
-                element = <ScatterPlotIcon />;
-                break;
-        }
+        let element = <ChartWrapper chartType={chartType} />;
+        
         const left = e.clientX;
         const top = e.clientY;
         addChart(new Position(top, left), element);

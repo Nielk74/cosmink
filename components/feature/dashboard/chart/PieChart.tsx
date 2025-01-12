@@ -10,7 +10,7 @@ export default function PieChart({
     className,
 }: Readonly<{
     data: ChartData<'pie'>;
-    options: ChartOptions<'pie'>;
+    options?: ChartOptions<'pie'>;
     className?: string;
 }>) {
     return (

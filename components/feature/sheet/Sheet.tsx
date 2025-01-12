@@ -3,8 +3,7 @@ import clsx from 'clsx';
 import Cell from './Cell';
 import { useCellContext } from './CellContext';
 
-
-export default function Sheet ({
+export default function Sheet({
   children,
   className,
 }: Readonly<{
@@ -14,12 +13,9 @@ export default function Sheet ({
   const { cellsMap, setCellsMap } = useCellContext();
   const [selectedCell, setSelectedCell] = React.useState<string | null>(null);
 
-
-
   const handleCellClick = (cellKey: string) => {
     setSelectedCell(cellKey);
   };
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (selectedCell) {
@@ -32,67 +28,64 @@ export default function Sheet ({
     }
   };
 
-
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const clipboardData = e.clipboardData.getData('text');
     const rows = clipboardData.split('\n');
-    
+
     if (selectedCell) {
       const [startRow, startCol] = selectedCell.split('-').map(Number);
-      
+
       const newCellsMap = new Map(cellsMap);
-      
+
       rows.forEach((row, rowIndex) => {
         const cells = row.split('\t');
         cells.forEach((cell, colIndex) => {
           const targetRow = `${startRow + rowIndex}`;
           const targetCol = `${startCol + colIndex}`;
-          
+
           const rowMap = newCellsMap.get(targetRow) || new Map();
           rowMap.set(targetCol, cell.trim());
           newCellsMap.set(targetRow, rowMap);
         });
       });
-      
+
       setCellsMap(newCellsMap);
     }
   };
 
   return (
-    <div
-      className={clsx(
-        'grid grid-cols-10 gap-4',
-        className,
-      )}
-    >
-      {Array.from(cellsMap).map(([rowKey, row]) => (
-        Array.from(row).map(([colKey, cellValue]) => {
+    <div className={clsx('grid grid-cols-10 gap-4', className)}>
+      {Array.from({ length: 10 }, (_, rowIndex) =>
+        Array.from({ length: 10 }, (_, colIndex) => {
+          const rowKey = `${rowIndex}`;
+          const colKey = `${colIndex}`;
           const cellId = `${rowKey}-${colKey}`;
-          console.log(cellId);
-          return (
+          const row = cellsMap.get(rowKey);
+          const cellValue = row ? row.get(colKey) : '';
 
-                    <Cell
-            key={cellId}
-            isSelected={selectedCell === cellId}
-            onClick={() => handleCellClick(cellId)}
-          >
-            {selectedCell === cellId ? (
-              <input
-                type="text"
-                autoFocus
-                value={cellValue}
-                onChange={handleInputChange}
-                onPaste={handlePaste}
-                className="w-full bg-transparent outline-none"
-              />
-            ) : (
-              cellValue
-            )}
-          </Cell>
-        )
-})
-      ))}
+          return (
+            <Cell
+              key={cellId}
+              isSelected={selectedCell === cellId}
+              onClick={() => handleCellClick(cellId)}
+            >
+              {selectedCell === cellId ? (
+                <input
+                  type="text"
+                  autoFocus
+                  value={cellValue}
+                  onChange={handleInputChange}
+                  onPaste={handlePaste}
+                  className="w-full bg-transparent outline-none"
+                />
+              ) : (
+                cellValue
+              )}
+            </Cell>
+          );
+        })
+      )}
       {children}
     </div>
   );

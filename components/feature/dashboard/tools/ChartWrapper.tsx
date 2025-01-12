@@ -6,8 +6,10 @@ import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
 import PieChart from "../chart/PieChart";
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import DataPicker from "./DataPicker";
+import DataPicker from "./DimensionPicker";
 import clsx from "clsx";
+import DimensionPicker from "./DimensionPicker";
+import MeasurePicker from "./MeasurePicker";
 ChartJS.register(ArcElement, Tooltip, Legend);
 export default function ChartWrapper({
     className,
@@ -17,6 +19,16 @@ export default function ChartWrapper({
     chartType: React.ReactNode;
 }>) {
     
+    const [dimensions, setDimensions] = React.useState([]);
+    const [measures, setMeasures] = React.useState([]);
+
+    React.useEffect(() => {
+        // if dimensions length is more than 0 and measures is more than 0 we create dataset
+        if(dimensions.length > 0 && measures.length > 0) {
+
+        }
+    }, [dimensions, measures]);
+
     const [data, setData] = React.useState({
         labels: [],
         datasets: [{
@@ -34,7 +46,9 @@ export default function ChartWrapper({
             || chartType === 'Line Chart' && <ShowChartIcon />
             || chartType === 'Scatter Plot' && <ScatterPlotIcon />
            )
-           || <DataPicker setData={setData}/>
+           || <div className='flex'>
+                <DimensionPicker setData={setDimensions} /><MeasurePicker setData={setMeasures} />
+           </div>
         }
         </div>
     );

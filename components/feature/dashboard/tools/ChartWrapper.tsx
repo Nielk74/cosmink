@@ -10,26 +10,6 @@ import DimensionPicker from "./DimensionPicker";
 import MeasurePicker from "./MeasurePicker";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export class Data {
-        // labels: string[];
-        // datasets: {
-        //     data: (string | undefined)[];
-        //     backgroundColor: never[];
-        //     borderColor: never[];
-        //     borderWidth: number;
-        // }[];
-
-    constructor(
-        public labels: string[],
-        public datasets: {
-            data: (string | undefined)[];
-            backgroundColor: never[];
-            borderColor: never[];
-            borderWidth: number;
-        }[]
-    ) {}
-}
-
 export default function ChartWrapper({
     className,
     chartType,
@@ -44,7 +24,7 @@ export default function ChartWrapper({
     return (
         <div className={clsx('flex flex-col items-center justify-center h-full', className)}>
            {    dimensions.length && measures.length && (
-            chartType === 'Pie Chart' && <PieChart dimensions={dimensions} measures={measures} />
+            chartType === 'Pie Chart' && <PieChart dimensions={dimensions} measures={measures}/>
             || chartType === 'Bar Chart' && <BarChartIcon />
             || chartType === 'Line Chart' && <ShowChartIcon />
             || chartType === 'Scatter Plot' && <ScatterPlotIcon />

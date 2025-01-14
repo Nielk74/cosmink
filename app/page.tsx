@@ -20,7 +20,7 @@ export default function Home() {
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <Link
-            href="import"
+            href="project/view"
             rel="noopener noreferrer"
           >
             <Button variant="contained" size="large">

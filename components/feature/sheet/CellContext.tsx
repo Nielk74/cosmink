@@ -28,12 +28,25 @@ export const CellProvider: React.FC<{ children: React.ReactNode }> = ({ children
     headerRow.set("2", "Population");
     cellsMap.set("0", headerRow);
   
+    const populationMap: { [key: string]: number } = {
+      "Springfield": 60000,
+      "Riverside": 55000,
+      "Greenville": 70000,
+      "Centerville": 65000,
+      "Fairview": 62000,
+      "Madison": 58000,
+      "Franklin": 64000,
+      "Salem": 53000,
+      "Clinton": 61000,
+      "Georgetown": 63000
+    };
+    
     // Data rows
     for (let i = 0; i <= 10; i++) {
       const row = new Map<string, string>();
       const city = cities[i % cities.length];
       const region = regions[i % regions.length];
-      const population = Math.floor(Math.random() * 100000) + 1000; // Random population
+      const population = populationMap[city];
       row.set("0", city);
       row.set("1", region);
       row.set("2", population.toString());

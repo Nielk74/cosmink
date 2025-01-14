@@ -25,7 +25,7 @@ export default function Home() {
           >
             <Button variant="contained" size="large">
               <Image
-                className="dark:invert"
+                className="dark:invert m-2"
                 src="/vercel.svg"
                 alt="Vercel logomark"
                 width={20}
@@ -34,13 +34,21 @@ export default function Home() {
               Try now
             </Button>
           </Link>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          <Link
+            href="https://github.com/Nielk74/cosmink"
             rel="noopener noreferrer"
           >
-            Read our docs
-          </a>
+            <Button size="large" variant="outlined">
+              <Image
+                className="m-2"
+                src="/github.svg"
+                alt="Vercel logomark"
+                width={20}
+                height={20}
+              />
+              Check the code
+            </Button>
+          </Link>
         </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">

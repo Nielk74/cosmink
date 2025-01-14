@@ -68,8 +68,8 @@ export default function Dashboard({
     const [positionTopLeft, positionBottomRight ] = computeChartPosition(atPosition);
     setHighlightPositionTopLeft(positionTopLeft);
     setHighlightPositionBottomRight(positionBottomRight);
-    console.log(positionTopLeft, positionBottomRight);
-    console.log(highlightVisible);
+    // console.log(positionTopLeft, positionBottomRight);
+    // console.log(highlightVisible);
   }
 
   function computeChartPosition(cursorPosition: Position): [Position, Position] {

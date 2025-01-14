@@ -2,22 +2,22 @@ import React from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import clsx from 'clsx';
 import { useCellContext } from '../../sheet/CellContext';
-import { Data } from './ChartWrapper';
 
 type ColumnPickerProps = {
   className?: string;
-  setData: (value: Data) => void;
+  setSelectedColumns: (value: string[]) => void;
+  selectedColumns: string[];
   title: string;
   color?: 'primary' | 'secondary';
 };
 
 export default function ColumnPicker({
   className,
-  setData,
+  setSelectedColumns,
+  selectedColumns,
   title,
   color = 'primary',
 }: Readonly<ColumnPickerProps>) {
-  const [selectedColumns, setSelectedColumns] = React.useState<string[]>([]);
   const { cellsMap } = useCellContext();
   const columnsName = Array.from(cellsMap.values())[0];
 
@@ -29,16 +29,8 @@ export default function ColumnPicker({
       newSelectedColumns = [...selectedColumns, columnName];
     }
     setSelectedColumns(newSelectedColumns);
-    const data = {
-      labels: newSelectedColumns,
-      datasets: [{
-        data: Array.from(cellsMap.values()).map((row) => row.get(columnName)),
-        backgroundColor: [],
-        borderColor: [],
-        borderWidth: 1,
-      }],
-    };
-    setData(data);
+    const data = Array.from(new Set(newSelectedColumns));
+    setSelectedColumns(data);
   }
 
   return (

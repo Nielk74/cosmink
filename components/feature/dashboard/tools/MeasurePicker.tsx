@@ -1,18 +1,20 @@
 import React from 'react';
 import ColumnPicker from './ColumnPicker';
-import { Data } from './ChartWrapper';
 
 export default function MeasurePicker({
   className,
-  setData,
+  setMeasures,
+  measures,
 }: Readonly<{
   className?: string;
-  setData: (value: Data) => void;
+  setMeasures: (value: string[]) => void;
+  measures: string[];
 }>) {
   return (
     <ColumnPicker
       className={className}
-      setData={setData}
+      setSelectedColumns={setMeasures}
+      selectedColumns={measures}
       title="Select Measures"
       color="secondary"
     />

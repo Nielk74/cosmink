@@ -4,6 +4,8 @@ import React, { createContext, useState, useContext } from 'react';
 type CellContextType = {
   cellsMap: Map<string, Map<string, string>>;
   setCellsMap: React.Dispatch<React.SetStateAction<Map<string, Map<string, string>>>>;
+  getPossibleValuesByColumnName(columnName: string): (string)[];
+  getMeasureSumByDimensionValues(measureName : string, dimensionName: string, columnsValues: string[]): number[];
 };
 
 const CellContext = createContext<CellContextType | undefined>(undefined);
@@ -37,11 +39,42 @@ export const CellProvider: React.FC<{ children: React.ReactNode }> = ({ children
       row.set("2", population.toString());
       cellsMap.set(`${i+1}`, row);
     }
-  
     setCellsMap(cellsMap);
   }, []);
+
+  function getColumnIndex(columnName: string): string | undefined {
+    let columnIndex = undefined;
+    Array.from(cellsMap.values())[0].forEach((value, index) => { if (value === columnName) {columnIndex = index; }});
+    return String(columnIndex);
+  }
+
+  function getPossibleValuesByColumnName(columnName: string): (string)[] {
+    const columnIndex = getColumnIndex(columnName);
+    if (columnIndex === undefined) return [];
+    const values = Array.from(cellsMap.values()).slice(1).map(row => row.get(String(columnIndex)));
+    return Array.from(new Set(values)).filter(value => value !== undefined) as string[];
+  }
+
+  function getMeasureSumByDimensionValues(measureName : string, dimensionName: string, columnsValues: string[]): number[] {
+    const dimensionIndex = getColumnIndex(dimensionName);
+    const measureIndex = getColumnIndex(measureName);
+    if (dimensionIndex === undefined || measureIndex === undefined) return [];
+    // create a map from the column values to the sum of the values in the row
+    const columnSumMap = new Map<string, number>();
+    Array.from(cellsMap.values())
+        .slice(1)
+        .forEach(row => {
+          const dimensionValue = row.get(dimensionIndex);
+          const measureValue = row.get(measureIndex);
+          if (dimensionValue && measureValue && columnsValues.includes(dimensionValue)) {
+            const sum = columnSumMap.get(dimensionValue) || 0;
+            columnSumMap.set(dimensionValue, sum + parseInt(measureValue));
+          }
+        });
+    return columnsValues.map(value => columnSumMap.get(value) || 0);
+  }
   return (
-    <CellContext.Provider value={{ cellsMap, setCellsMap }}>
+    <CellContext.Provider value={{ cellsMap, setCellsMap, getPossibleValuesByColumnName, getMeasureSumByDimensionValues }}> 
       {children}
     </CellContext.Provider>
   );

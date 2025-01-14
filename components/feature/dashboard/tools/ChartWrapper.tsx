@@ -38,43 +38,20 @@ export default function ChartWrapper({
     chartType: React.ReactNode;
 }>) {
     
-    const [dimensions, setDimensions] = React.useState<Data | null>(null);
-    const [measures, setMeasures] = React.useState<Data | null>(null);
+    const [dimensions, setDimensions] = React.useState<string[]>([]);
+    const [measures, setMeasures] = React.useState<string[]>([]);
 
-    React.useEffect(() => {
-        // if dimensions length is more than 0 and measures is more than 0 we create dataset
-        if(dimensions && measures) {
-            setData({
-        labels: [],
-        datasets: [{
-            data: [],
-            backgroundColor: [],
-            borderColor: [],
-            borderWidth: 1,
-        }],
-    })
-        }
-    }, [dimensions, measures]);
-
-    const [data, setData] = React.useState({
-        labels: [],
-        datasets: [{
-            data: [],
-            backgroundColor: [],
-            borderColor: [],
-            borderWidth: 1,
-        }],
-    });
     return (
         <div className={clsx('flex flex-col items-center justify-center h-full', className)}>
-           {    data?.datasets[0].data.length > 0 && (
-            chartType === 'Pie Chart' && <PieChart data={data} />
+           {    dimensions.length && measures.length && (
+            chartType === 'Pie Chart' && <PieChart dimensions={dimensions} measures={measures} />
             || chartType === 'Bar Chart' && <BarChartIcon />
             || chartType === 'Line Chart' && <ShowChartIcon />
             || chartType === 'Scatter Plot' && <ScatterPlotIcon />
            )
            || <div className='flex'>
-                <DimensionPicker setData={(data: Data) => setDimensions(data)} /><MeasurePicker setData={(data: Data) => setMeasures(data)} />
+                <DimensionPicker setDimensions={setDimensions} dimensions={dimensions} />
+                <MeasurePicker setMeasures={setMeasures} measures={measures} />
            </div>
         }
         </div>

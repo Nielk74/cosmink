@@ -1,20 +1,21 @@
 import React from 'react';
 import ColumnPicker from './ColumnPicker';
-import { Data } from './ChartWrapper';
 
 export default function DimensionPicker({
   className,
-  setData,
+  setDimensions,
+  dimensions,
 }: Readonly<{
   className?: string;
-  setData: (value: Data) => void;
+  setDimensions: (value: string[]) => void;
+  dimensions: string[];
 }>) {
   return (
     <ColumnPicker
       className={className}
-      setData={setData}
+      setSelectedColumns={setDimensions}
+      selectedColumns={dimensions}
       title="Select Dimensions"
-      
     />
   );
 }

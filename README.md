@@ -1,5 +1,8 @@
 # Cosmink Frontend
 
+[![Lint Status](https://github.com/Nielk74/cosmink/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/Nielk74/cosmink/actions/workflows/lint.yml)
+[![SonarQube](https://sonarcloud.io/api/project_badges/measure?project=Nielk74_cosmink&metric=alert_status)](https://sonarcloud.io/project/overview?id=Nielk74_cosmink)
+
 Welcome to the frontend service for **Cosmink**, a graphical insights analyzer. This project provides the user interface and client-side functionality to support the visualization and analysis features of Cosmink.
 
 ## Project Structure

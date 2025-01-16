@@ -9,8 +9,9 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
 import { ListSubheader } from '@mui/material';
-import { Position } from '../Dashboard';
-import ChartWrapper from './ChartWrapper';
+import { Position } from '@/lib/classes/position';
+import { Chart } from '@/lib/classes/chart';
+import { Pie } from '@/lib/classes/charts/pie';
 
 export default function ChartPicker({
   children,
@@ -23,7 +24,7 @@ export default function ChartPicker({
   className?: string;
     displayHighlight: (cursorPosition: Position) => void;
     setHighlightVisible: (visible: boolean) => void;
-    addChart: (cursorPosition: Position, element: React.ReactNode) => void;
+    addChart: (cursorPosition: Position, newChart : Chart ) => void;
 }>) {
     const [dragClone, setDragClone] = React.useState<HTMLElement | null>(null);
     
@@ -64,7 +65,7 @@ export default function ChartPicker({
       dragClone.style.left = `${e.clientX}px`;
       dragClone.style.top = `${e.clientY}px`;
       setHighlightVisible(true);
-      displayHighlight(new Position(e.clientY, e.clientX));
+      displayHighlight(new Position(e.clientX, e.clientY ));
     }
   };
 
@@ -72,11 +73,15 @@ export default function ChartPicker({
     if (dragClone) {
         // create a React element from the clone value
         const chartType = dragClone.textContent;
-        const element = <ChartWrapper chartType={chartType} />;
-        
-        const left = e.clientX;
-        const top = e.clientY;
-        addChart(new Position(top, left), element);
+        const cursorPosition = new Position( e.clientX, e.clientY);
+        switch (chartType) {
+          case 'Pie Chart':
+            addChart(cursorPosition, new Pie(new Position(0, 0), new Position(0, 0)));
+            break;
+          default:
+            console.log('Unknown chart type');
+        }
+
       dragClone.remove(); // Remove the clone
       setHighlightVisible(false);
       setDragClone(null);

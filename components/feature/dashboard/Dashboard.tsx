@@ -2,116 +2,32 @@ import React from 'react';
 import clsx from 'clsx';
 import ChartPicker from './tools/ChartsPicker';
 import Highlight from './Highlight';
+import { Position } from '@/lib/classes/position';
+import { Chart } from '@/lib/classes/chart';
+import ChartWrapper from './tools/ChartWrapper';
+
+const chartWidth = 500;
+const chartHeight = 300;
+const gridStep = 100;
+
+  function computeChartPosition(cursorPosition: Position, chartsMap : Map<string, Chart>): [Position, Position] {
 
 
-export class Position {
-  y: number;
-  x: number;
-  constructor(y: number, x: number) {
-    this.y = y;
-    this.x = x;
-  }
-
-  /**
-   * isInBounds
-   */
-  public isInBoundsOfDOM(element : HTMLElement | null) : boolean {
-    if(element === null)
-      return false;
-    const rect = element.getBoundingClientRect();
-    return this.y >= rect.top && this.y <= rect.bottom && this.x >= rect.left && this.x <= rect.right
-  }
-  /**
-   bottomRight.x <= chart.positionTopLeft.x || 
-          topLeft.x >= chart.positionBottomRight.x || 
-          bottomRight.y <= chart.positionTopLeft.y || 
-          topLeft.y >= chart.positionBottomRight.y
-
-    */
-
-}
-export class Chart {
-  positionTopLeft : Position;
-  positionBottomRight : Position;
-  element : React.ReactNode;
-  constructor(positionTopLeft : Position, positionBottomRight : Position, element: React.ReactNode) {
-    this.positionTopLeft = positionTopLeft;
-    this.positionBottomRight = positionBottomRight;
-    this.element = element;
-  }
-}
-
-export default function Dashboard({
-  className,
-}: Readonly<{
-  className?: string;
-}>) {
-  const [ chartsMap, setChartsMap ] = React.useState(new Map<string, Chart>());
-  const [ highlightPositionTopLeft, setHighlightPositionTopLeft ] = React.useState(new Position(0,0));
-  const [ highlightPositionBottomRight, setHighlightPositionBottomRight ] = React.useState(new Position(0,0));
-  const [ highlightVisible, setHighlightVisible ] = React.useState(false);
-
-  function addChart(cursorPosition : Position , element: React.ReactNode) {
-    if(!cursorPosition.isInBoundsOfDOM(document.querySelector("#dashboard")))
-      return;
-    // compute the position of the chart in the grid
-    const [ positionTopLeft , positionBottomRight ] = computeChartPosition(cursorPosition);
-    const newChart = new Chart(positionTopLeft, positionBottomRight, element);
-    setChartsMap(new Map(chartsMap.set('chart'+Math.random() , newChart)));
-  }
-
-  function displayHighlight(atPosition : Position) {
-    if (!atPosition.isInBoundsOfDOM(document.querySelector("#dashboard"))) {
-      setHighlightVisible(false);
-      return;
-    }
-    const [positionTopLeft, positionBottomRight ] = computeChartPosition(atPosition);
-    setHighlightPositionTopLeft(positionTopLeft);
-    setHighlightPositionBottomRight(positionBottomRight);
-    // console.log(positionTopLeft, positionBottomRight);
-    // console.log(highlightVisible);
-  }
-
-  function computeChartPosition(cursorPosition: Position): [Position, Position] {
-    const chartWidth = 300;
-    const chartHeight = 200;
-    const gridStep = 100;
-
-    const [left, top] = computeInitialPosition(cursorPosition, chartWidth, chartHeight, gridStep);
-    let [topLeft, bottomRight] = createPositions(top, left, chartWidth, chartHeight);
-
+    //const [left, top] = computeInitialPosition(cursorPosition, chartWidth, chartHeight, gridStep);
+    const topLeftPosition = new Position(cursorPosition.x - chartWidth / 2, cursorPosition.y - chartHeight / 2); 
+    //let [topLeft, bottomRight] = createPositions(top, left, chartWidth, chartHeight);
+    const bottomRightPosition = new Position(topLeftPosition.x + chartWidth, topLeftPosition.y + chartHeight);
     const dashboardElement = document.querySelector("#dashboard") as HTMLElement;
-
-    if (!arePositionsInBounds(topLeft, bottomRight, dashboardElement)) {
+    const chartIsInBounds = topLeftPosition.isInBoundsOfDOM(dashboardElement) && bottomRightPosition.isInBoundsOfDOM(dashboardElement);
+    if (!chartIsInBounds) {
       return [new Position(0, 0), new Position(0, 0)];
     }
-
-    [topLeft, bottomRight] = adjustPositionForOverlaps(topLeft, bottomRight, chartWidth, chartHeight, gridStep, dashboardElement);
-
-    return [topLeft, bottomRight];
+    return adjustPositionForOverlaps(topLeftPosition, bottomRightPosition, chartsMap);
   }
 
-  function computeInitialPosition(cursorPosition: Position, chartWidth: number, chartHeight: number, gridStep: number): [number, number] {
-    let left = cursorPosition.x - chartWidth / 2;
-    let top = cursorPosition.y - chartHeight / 2;
+  function adjustPositionForOverlaps(topLeft: Position, bottomRight: Position, chartsMap: Map<string, Chart>): [Position, Position] {
+    const dashboardElement = document.querySelector("#dashboard") as HTMLElement;
 
-    left = Math.round(left / gridStep) * gridStep;
-    top = Math.round(top / gridStep) * gridStep;
-
-    return [left, top];
-  }
-
-  function createPositions(top: number, left: number, chartWidth: number, chartHeight: number): [Position, Position] {
-    const topLeft = new Position(top, left);
-    const bottomRight = new Position(top + chartHeight, left + chartWidth);
-    return [topLeft, bottomRight];
-  }
-
-  function arePositionsInBounds(topLeft: Position, bottomRight: Position, dashboardElement: HTMLElement): boolean {
-    return topLeft.isInBoundsOfDOM(dashboardElement) && bottomRight.isInBoundsOfDOM(dashboardElement);
-  }
-
-  function adjustPositionForOverlaps(topLeft: Position, bottomRight: Position, chartWidth: number, chartHeight: number, gridStep: number, dashboardElement: HTMLElement): [Position, Position] {
     for (const chart of chartsMap.values()) {
       let isOverlapping = true;
 
@@ -126,8 +42,9 @@ export default function Dashboard({
       if (isOverlapping) {
         topLeft.x += gridStep;
         bottomRight.x += gridStep;
+        const chartIsInBounds = topLeft.isInBoundsOfDOM(dashboardElement) && bottomRight.isInBoundsOfDOM(dashboardElement);
 
-        if (!arePositionsInBounds(topLeft, bottomRight, dashboardElement)) {
+        if (!chartIsInBounds) {
         return [new Position(0, 0), new Position(0, 0)];
         }
       }
@@ -135,14 +52,57 @@ export default function Dashboard({
     }
     return [topLeft, bottomRight];
   }
-  
+
+export default function Dashboard({
+  className,
+}: Readonly<{
+  className?: string;
+}>) {
+  const [ chartsMap, setChartsMap ] = React.useState(new Map<string, Chart>());
+  const [ highlightPositionTopLeft, setHighlightPositionTopLeft ] = React.useState(new Position(0,0));
+  const [ highlightPositionBottomRight, setHighlightPositionBottomRight ] = React.useState(new Position(0,0));
+  const [ highlightVisible, setHighlightVisible ] = React.useState(false);
+
+  function addChart(cursorPosition : Position , newChart : Chart) { // TODO: l'idée est de faire abstraction des classes chart en d'appeler le wrapper directement ici AFIN de créer la suppression plus simplement par exemple
+    if(!cursorPosition.isInBoundsOfDOM(document.querySelector("#dashboard")))
+      return;
+    // compute the position of the chart in the grid
+    const [ positionTopLeft , positionBottomRight ] = computeChartPosition(cursorPosition , chartsMap);
+    // TMP
+    newChart.positionTopLeft = positionTopLeft;
+    newChart.positionBottomRight = positionBottomRight;
+    
+    setChartsMap(new Map(chartsMap.set(newChart.key , newChart)));
+  }
+
+  function deleteChart(chartToDelete: Chart) {
+    const newMap = new Map(chartsMap);
+    newMap.delete(chartToDelete.key);
+    setChartsMap(newMap);
+  }
+
+  function displayHighlight(atPosition : Position) {
+    if (!atPosition.isInBoundsOfDOM(document.querySelector("#dashboard"))) {
+      setHighlightVisible(false);
+      return;
+    }
+    const [positionTopLeft, positionBottomRight ] = computeChartPosition(atPosition, chartsMap);
+    setHighlightPositionTopLeft(positionTopLeft);
+    setHighlightPositionBottomRight(positionBottomRight);
+    // console.log(positionTopLeft, positionBottomRight);
+    // console.log(highlightVisible);
+  }
+
   return (
     <div id="dashboard" className={clsx('flex flex-col gap-4 p-4 w-full h-full', className)}>
-        <ChartPicker  addChart={addChart} displayHighlight={displayHighlight} setHighlightVisible={setHighlightVisible} className="!absolute z-50"/>
+        <ChartPicker  addChart={addChart}
+                      displayHighlight={displayHighlight}
+                      setHighlightVisible={setHighlightVisible}
+                      className="!absolute z-50"/>
         
       {Array.from(chartsMap.values()).map((chart, index) => (
         <div key={index} className="absolute border" style={{top: chart.positionTopLeft.y, left: chart.positionTopLeft.x, width: chart.positionBottomRight.x - chart.positionTopLeft.x, height: chart.positionBottomRight.y - chart.positionTopLeft.y}}>
-          {chart.element}
+          <ChartWrapper chart={chart} deleteChart={deleteChart}/>
         </div>
       ))}
       {highlightVisible && <Highlight topLeft={highlightPositionTopLeft} bottomRight={highlightPositionBottomRight}/>}

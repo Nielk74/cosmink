@@ -1,3 +1,4 @@
+import { JSX } from "react";
 import { Position } from "./position";
 
 
@@ -6,15 +7,13 @@ export class Chart {
     static numberOfCharts : number = 0;
     positionTopLeft : Position;
     positionBottomRight : Position;
-    static type : string = 'Chart';
-    constructor(positionTopLeft : Position, positionBottomRight : Position) {
+    component : React.ComponentType<{ dimensions: string[]; measures: string[] }>;
+    constructor(positionTopLeft : Position, positionBottomRight : Position, component : React.ComponentType<{ dimensions: string[]; measures: string[] }>) {
       Chart.numberOfCharts++;
       this.key = `chart-${Chart.numberOfCharts}`;
       this.positionTopLeft = positionTopLeft;
       this.positionBottomRight = positionBottomRight;
-    }
-    getType(){
-      return (this.constructor as typeof Chart).type;
+      this.component = component;
     }
   }
   

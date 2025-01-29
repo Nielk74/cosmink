@@ -3,7 +3,7 @@
 // import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
-import { CellProvider } from "@/components/feature/sheet/CellContext";
+
 import { ThemeProvider } from "@mui/material";
 import theme from "@/styles/theme";
 import { injectThemeVariables } from "@/styles/injectThemeVariables";
@@ -38,9 +38,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-[family-name:var(--font-geist-sans)]`}
       >
         <ThemeProvider theme={theme}>
-          <CellProvider>
             {children}
-          </CellProvider>
         </ThemeProvider>
       </body>
     </html>
